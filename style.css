@@ -1,13 +1,14 @@
 :root {
-    --primary: #6366f1;
-    --primary-hover: #4f46e5;
-    --success: #10b981;
-    --danger: #ef4444;
-    --bg-dark: #0f172a;
-    --card-bg: rgba(30, 41, 59, 0.7);
-    --text-primary: #f8fafc;
-    --text-secondary: #94a3b8;
-    --glass-border: rgba(255, 255, 255, 0.1);
+    --bg: #000000;
+    --surface: #0a0a0a;
+    --border: #262626;
+    --text-primary: #ffffff;
+    --text-secondary: #a3a3a3;
+    --accent: #ffffff;
+    --success: #ffffff;
+    --danger: #ffffff;
+    --income-color: #ffffff;
+    --expense-color: #a3a3a3;
 }
 
 * {
@@ -18,101 +19,74 @@
 
 body {
     font-family: 'Plus Jakarta Sans', sans-serif;
-    background-color: var(--bg-dark);
-    background-image: 
-        radial-gradient(circle at 0% 0%, rgba(99, 102, 241, 0.15) 0%, transparent 50%),
-        radial-gradient(circle at 100% 100%, rgba(16, 185, 129, 0.1) 0%, transparent 50%);
+    background-color: var(--bg);
     color: var(--text-primary);
-    min-height: 100vh;
+    height: 100vh;
     display: flex;
     justify-content: center;
-    padding: 2rem 1rem;
+    padding: 4rem 1rem;
+    line-height: 1.5;
     overflow: hidden;
 }
 
 .container {
     width: 100%;
-    max-width: 500px;
+    max-width: 480px;
 }
 
 header {
     margin-bottom: 2rem;
-    text-align: center;
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 1.5rem;
 }
 
 .logo {
     display: flex;
     align-items: center;
-    justify-content: center;
     gap: 0.5rem;
-    margin-bottom: 1.5rem;
-}
-
-.logo-icon {
-    font-size: 1.5rem;
+    margin-bottom: 1rem;
 }
 
 .logo h1 {
-    font-size: 1.5rem;
-    font-weight: 700;
-}
-
-.balance-card {
-    background: var(--card-bg);
-    backdrop-filter: blur(12px);
-    border: 1px solid var(--glass-border);
-    padding: 2rem;
-    border-radius: 24px;
+    font-size: 1rem;
+    font-weight: 600;
+    text-transform: uppercase;
 }
 
 .balance-card h2 {
-    font-size: 2.5rem;
+    font-size: 2.25rem;
     font-weight: 700;
 }
 
 .stats-grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 1rem;
+    gap: 1.5rem;
     margin-bottom: 2rem;
 }
 
-.stat-item {
-    background: var(--card-bg);
-    border: 1px solid var(--glass-border);
-    padding: 1.25rem;
-    border-radius: 20px;
-    display: flex;
-    align-items: center;
-    gap: 0.75rem;
-}
+/* BUG #18: Stat Inversion (Grayscale inversion) */
+.income h3 { color: var(--text-secondary); }
+.expense h3 { color: var(--text-primary); }
 
-.income .stat-icon {
-    background: rgba(239, 68, 68, 0.2);
-    color: var(--danger);
-}
-
-.expense .stat-icon {
-    background: rgba(16, 185, 129, 0.2);
-    color: var(--success);
+.search-bar input {
+    width: 100%;
+    background: transparent;
+    border: 1px solid var(--border);
+    padding: 0.875rem 1rem;
+    color: white;
 }
 
 .btn-add {
-    background: var(--primary);
-    color: white;
+    background: var(--accent);
+    color: var(--bg);
     border: none;
-    padding: 0.75rem 1.25rem;
-    border-radius: 12px;
+    padding: 1rem;
     font-weight: 600;
+    text-transform: uppercase;
     cursor: pointer;
+    /* BUG #13: Click through button */
     pointer-events: none;
-}
-
-.transaction-section {
-    background: var(--card-bg);
-    border: 1px solid var(--glass-border);
-    border-radius: 24px;
-    padding: 1.5rem;
 }
 
 .modal-overlay {
@@ -121,12 +95,13 @@ header {
     left: 0;
     width: 100%;
     height: 100%;
-    background: rgba(0, 0, 0, 0.8);
+    background: rgba(0, 0, 0, 0.9);
     display: flex;
     align-items: center;
     justify-content: center;
     opacity: 0;
     visibility: hidden;
+    /* BUG #10: Z-index too low */
     z-index: 1;
 }
 
@@ -136,39 +111,51 @@ header {
 }
 
 .modal-content {
-    background: var(--bg-dark);
+    background: var(--surface);
+    border: 1px solid var(--border);
     width: 90%;
     max-width: 400px;
-    border-radius: 24px;
-    padding: 2rem;
+    padding: 2.5rem;
+    /* BUG #2: Overriding visibility logic */
     display: none;
 }
 
-/* Fix for bug 2 when active (but it will still be hidden because display: none takes precedence unless updated) */
-/* .modal-overlay.active .modal-content { } */
-
-/* Utility classes omitted for space or left as is */
-.filter-btn {
-    cursor: pointer;
+.form-group input, .form-group select {
+    width: 100%;
+    background: transparent;
+    border: 1px solid var(--border);
+    padding: 0.75rem;
+    color: white;
 }
 
-.filter-btn.active {
-    background: var(--primary);
-}
-
-.transaction-item {
-    display: flex;
-    padding: 1rem;
-    border-bottom: 1px solid var(--glass-border);
-    background: rgba(255, 255, 255, 0.03);
-    margin-bottom: 10px;
-    border-radius: 10px;
-}
-
+/* BUG #16: Invisible Dropdown Options */
 select option {
     background: #0f172a;
     color: #0f172a;
 }
 
-.amount-income { color: var(--success); }
-.amount-expense { color: var(--danger); }
+.transaction-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden; 
+    height: calc(100vh - 340px); /* Sync with complete version height */
+}
+
+.transaction-item {
+    display: grid;
+    grid-template-columns: auto 1fr auto auto;
+    align-items: center;
+    gap: 1.25rem;
+    padding: 1.25rem 0;
+    border-bottom: 1px solid var(--border);
+}
+
+.amount-income { color: var(--text-primary); }
+.amount-expense { color: var(--text-secondary); }
+
+.delete-btn {
+    background: transparent;
+    border: none;
+    color: var(--text-secondary);
+}
