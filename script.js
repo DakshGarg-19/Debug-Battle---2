@@ -92,7 +92,7 @@ function renderTransactions() {
   // Filter Search
   const query = searchInput.value;
   if (query) {
-    filtered = cd .filtered.filter((t) =>
+    filtered = filtered.filter((t) =>
       t.text.toLowerCase().includes(query.toLowerCase()),
     );
   }
